@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(MainController::class)
+-> group(function () {
+    Route::get('/', 'index') -> name('main');
+    Route::get('/book-list', 'bookList') -> name('book-list');
+    Route::get('/singin', 'singin') -> name('singin');
 });
