@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,11 @@ Route::controller(MainController::class)
     Route::get('/', 'index') -> name('main');
     Route::get('/book-list', 'bookList') -> name('book-list');
     Route::get('/singin', 'singin') -> name('singin');
+});
+
+Route::controller(LoginController::class)
+-> group(function () {
+    Route::post('/singin', 'login') -> name('login');
+    Route::post('/singinCreate', 'createUser') -> name('createUser');
+    Route::post('/logout', 'logout') -> name('logout');
 });
