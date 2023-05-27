@@ -41,4 +41,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        /*if ($this -> hasOne(ListOfAdmins::class, 'user_id', 'id')) {
+            return 'admin';
+        } else {
+            return 'no';
+        }*/
+        return $this -> hasOne(ListOfAdmins::class, 'user_id', 'id');
+    }
 }

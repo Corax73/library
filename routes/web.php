@@ -18,7 +18,7 @@ use App\Http\Controllers\LoginController;
 Route::controller(MainController::class)
 -> group(function () {
     Route::get('/', 'index') -> name('main');
-    Route::get('/book-list', 'bookList') -> name('book-list');
+    Route::get('/book-list', 'bookList') -> name('book-list') ->middleware('auth');
     Route::get('/singin', 'singin') -> name('singin');
 });
 

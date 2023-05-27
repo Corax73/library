@@ -60,19 +60,7 @@
             </div>
         </section>
         <!-- End: Page Banner -->
-        <a id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Welcome, {{ Auth::user()->name }}.
-                    </a>
-                    <p>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><strong>
-                                        {{ __('Logout') }}
-                                        </strong></a>
-                    </p>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                    </form>
+        
         <!-- Start: Book & Media Section -->
         <div id="content" class="site-content">
             <div id="primary" class="content-area">
