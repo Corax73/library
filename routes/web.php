@@ -18,8 +18,10 @@ use App\Http\Controllers\LoginController;
 Route::controller(MainController::class)
 -> group(function () {
     Route::get('/', 'index') -> name('main');
-    Route::get('/book-list', 'bookList') -> name('book-list') ->middleware('auth');
+    Route::get('/book-list', 'bookList') -> name('book-list') -> middleware('auth');
     Route::get('/singin', 'singin') -> name('singin');
+    Route::get('/add-book', 'bookAddForm') -> name('bookAddForm') -> middleware('auth');
+    Route::post('/add-book', 'addBook') -> name('addBook') -> middleware('auth');
 });
 
 Route::controller(LoginController::class)

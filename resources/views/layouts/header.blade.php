@@ -23,7 +23,8 @@
                                             @if (Auth::check())
                                             <a>Welcome, {{ Auth::user() -> name }}.</a>
                                             @if (Auth::user() -> isAdmin)
-                                            <a>You is admin</a>
+                                            <a>You is admin.</a>
+                                            <a href="{{ route('bookAddForm') }}">You can add book</a>
                                             @endif
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                 @csrf
