@@ -24,7 +24,7 @@
                                             <a>Welcome, {{ Auth::user() -> name }}.</a>
                                             @if (Auth::user() -> isAdmin)
                                             <a>You is admin.</a>
-                                            <a href="{{ route('bookAddForm') }}">You can add book</a>
+                                            <a href="{{ route('adminPanel') }}">Admin panel</a>
                                             @endif
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                 @csrf

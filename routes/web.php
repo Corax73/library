@@ -17,16 +17,21 @@ use App\Http\Controllers\LoginController;
 
 Route::controller(MainController::class)
 -> group(function () {
-    Route::get('/', 'index') -> name('main');
-    Route::get('/book-list', 'bookList') -> name('book-list') -> middleware('auth');
-    Route::get('/singin', 'singin') -> name('singin');
-    Route::get('/add-book', 'bookAddForm') -> name('bookAddForm') -> middleware('auth');
-    Route::post('/add-book', 'addBook') -> name('addBook') -> middleware('auth');
+    Route::get('/', 'index')->name('main');
+    Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
+    Route::get('/singin', 'singin')->name('singin');
+    Route::get('/admin-panel', 'adminPanel')->name('adminPanel')->middleware('auth');
+    Route::get('/add-book', 'bookAddForm')->name('bookAddForm')->middleware('auth');
+    Route::post('/add-book', 'addBook')->name('addBook')->middleware('auth');
+    Route::get('/add-category', 'categoryAddForm')->name('categoryAddForm')->middleware('auth');
+    Route::post('/add-category', 'addCategory')->name('addCategory')->middleware('auth');
+    Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
+    Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
 });
 
 Route::controller(LoginController::class)
 -> group(function () {
-    Route::post('/singin', 'login') -> name('login');
-    Route::post('/singinCreate', 'createUser') -> name('createUser');
-    Route::post('/logout', 'logout') -> name('logout');
+    Route::post('/singin', 'login')->name('login');
+    Route::post('/singinCreate', 'createUser')->name('createUser');
+    Route::post('/logout', 'logout')->name('logout');
 });

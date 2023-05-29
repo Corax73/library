@@ -17,7 +17,7 @@ class LoginController extends Controller
      */
     public function createUser(Request $request)
     {
-        $validatedData = $request -> validate( [
+        $validatedData = $request->validate( [
             'name' => 'required|unique:users|min:3',
             'email' => 'required|unique:users|email',
             'password' => 'required|min:8'
@@ -25,9 +25,9 @@ class LoginController extends Controller
 
         $validatedData['password'] = Hash::make( $validatedData['password']);
         $user = new User($validatedData);
-        $user -> saveOrFail();
+        $user->saveOrFail();
 
-        return redirect() -> route('main');        
+        return redirect()->route('main');        
     }
 
     /**

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
+use Validator;
 
 class MainController extends Controller
 {
@@ -46,13 +49,21 @@ class MainController extends Controller
      */
     public function bookAddForm()
     {
-        if (Auth::user() -> isAdmin) {
-            return view('add-book');
+        if (Auth::user()->isAdmin) {
+            return view('layouts.add-book-form');
         } else {
             return view('main');
         }
     }
 
+    /**
+     * view admin panel page
+     * @return view
+     */
+    public function adminPanel()
+    {
+        return view('admin-panel');
+    }
     /**
      * adds book instance and saves
      * @return redirect
@@ -72,6 +83,62 @@ class MainController extends Controller
         $validatedData['cover'] = $filename;
         Book::create($validatedData);
 
-        return redirect() -> route('book-list');
+        return redirect()->route('book-list');
+    }
+    
+    /**
+     * view add category page
+     * @return view
+     */
+    public function categoryAddForm()
+    {
+        if (Auth::user()->isAdmin) {
+            return view('layouts.add-category-form');
+        } else {
+            return view('main');
+        }
+    }
+
+    /**
+     * add category and save
+     * @return redirect
+     */
+    public function addCategory(Request $request)
+    {
+        $validatedData = $request->validate( [
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
+        ]);
+
+        Category::create($validatedData);
+
+        return redirect()->route('book-list');
+    }
+
+    /**
+     * view manage users page
+     * @return view
+     */
+    public function manageUsers()
+    {
+        $users = User::all();
+        
+        return view('layouts.manage-users', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * deletes a user
+     * @return redirect
+     */
+    public function destroyUser(Request $request)
+    {
+        $id = (integer)$request->id;
+
+        $user = User::find($id);
+        $user->delete();
+
+        return redirect('/manage-users');
     }
 }
