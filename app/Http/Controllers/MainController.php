@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use Validator;
+use App\Models\ListOfAdmins;
 
 class MainController extends Controller
 {
@@ -139,6 +140,23 @@ class MainController extends Controller
         $user = User::find($id);
         $user->delete();
 
+        return redirect('/manage-users');
+    }
+
+    /**
+     * sets user role
+     * @return redirect
+     */
+    public function setRole(Request $request)
+    {
+        $id['user_id'] = (integer)$request->id;
+        $user = User::find($id);
+
+        if ($user && !$user[0]->isAdmin) {
+            ListOfAdmins::create($id);
+        } elseif ($user && $user[0]->isAdmin) {
+            ListOfAdmins::where('user_id', $id)->delete();
+        }
         return redirect('/manage-users');
     }
 }

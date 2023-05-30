@@ -14,8 +14,6 @@
                        @foreach($users as $key => $user)
                            @if($user)
                         <tr>
-                           <form method="POST" action="{{ route('destroyUser', $user->id) }}" accept-charset="UTF-8">
-                                    @csrf
                             <td class="table-text">
                                 <p>{{ $user->name }}</p>
                             </td>
@@ -27,12 +25,25 @@
                             </td>
                             <td class="table-text">
                                 <p>{{ $user->isAdmin ? 'IsAdmin' : 'IsUser' }}</p>
+                                <form method="POST" action="{{ route('setRole', $user->id) }}" accept-charset="UTF-8">
+                                    @csrf
+                                    <p><select name="blocking" class="select">
+                                        @if ($user->isAdmin)
+                                        <option value="0">User</option>
+                                        @else
+                                        <option value="1">Admin</option>
+                                        @endif
+                                    </select></p>
+                                    <p><input type="submit" name="action" class="b1" value="Set role"></p>
+                                </form>
                             </td>
                             <td class="table-text">
-                            @method ('delete')
-                                <p><input type="submit" name="action" class="b1" value="❌"></p>                                
+                                <form method="POST" action="{{ route('destroyUser', $user->id) }}" accept-charset="UTF-8">
+                                @csrf
+                                @method ('delete')
+                                <p><input type="submit" name="action" class="b1" value="❌"></p>
+                                </form>
                             </td>
-                            </form>
                         </tr>
                             @endif
                         @endforeach

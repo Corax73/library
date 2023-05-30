@@ -44,6 +44,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this -> hasOne(ListOfAdmins::class, 'user_id', 'id');
+        return $this->hasOne(ListOfAdmins::class, 'user_id', 'id');
     }
 }

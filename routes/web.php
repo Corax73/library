@@ -27,6 +27,7 @@ Route::controller(MainController::class)
     Route::post('/add-category', 'addCategory')->name('addCategory')->middleware('auth');
     Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
     Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
+    Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
 });
 
 Route::controller(LoginController::class)
