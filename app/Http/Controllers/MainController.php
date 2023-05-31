@@ -8,8 +8,8 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
-use Validator;
 use App\Models\ListOfAdmins;
+use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
@@ -29,7 +29,28 @@ class MainController extends Controller
     public function bookList()
     {
         if (Auth::check()) {
-            return view('book-list');
+            $books = Book::all();
+            return view('book-list', [
+                'books' => $books
+            ]);
+        } else {
+            return view('main');
+        }
+    }
+
+    /**
+     * show book page
+     * @return view
+     */
+    public function showBook(Request $request)
+    {
+        if (Auth::check()) {
+            $id = (integer)$request->id;
+            $book = Book::find($id);
+            //dd($book);
+            return view('book', [
+                'book' => $book
+            ]);
         } else {
             return view('main');
         }

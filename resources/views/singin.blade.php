@@ -2,36 +2,7 @@
 <html lang="zxx">
     
 
-<head>        
-        
-        <!-- Meta -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
-        
-        <!-- Title -->
-        <title>..:: LIBRARIA ::..</title>
-        
-        <!-- Favicon -->
-        <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
-        
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        
-        <!-- Mobile Menu -->
-        <link href="css/mmenu.css" rel="stylesheet" type="text/css" />
-        <link href="css/mmenu.positioning.css" rel="stylesheet" type="text/css" />
-        
-        <!-- Stylesheet -->
-        <link href="style.css" rel="stylesheet" type="text/css" />
-        
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
+@include('layouts.head')
 
 
     <body>
@@ -78,14 +49,14 @@
                                                         @csrf
                                                             <p class="form-row form-row-first input-required">
                                                                 <label>
-                                                                    <span class="first-letter">Barcode or Username</span>  
+                                                                    <span class="first-letter">Username</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label>
                                                                 <input type="text"  id="username" name="name" class="input-text">
                                                              </p>
                                                             <p class="form-row form-row-last input-required">
                                                                 <label>
-                                                                    <span class="first-letter">Pin</span>  
+                                                                    <span class="first-letter">Password</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label>
                                                                 <input type="password" id="password" name="password" class="input-text">
@@ -114,13 +85,12 @@
                                                         <div class="new-user-head">
                                                             <h2>Create New Account</h2>
                                                             <span class="underline left"></span>
-                                                            <p>If no barcode has been assigned for your account, please contact the library.</p>
                                                         </div>
                                                         <form action="{{ route('createUser') }}" class="login" method="post">
                                                         @csrf
                                                             <p class="form-row form-row-first input-required">
                                                                 <label>
-                                                                    <span class="first-letter">Barcode</span>  
+                                                                    <span class="first-letter">Username</span>  
                                                                     <span class="second-letter">*</span>
                                                                 </label>
                                                                 <input type="text" id="username1" name="name" class="input-text">
@@ -227,56 +197,7 @@
         @include('layouts.footer')
         <!-- End: Footer -->
         
-        <!-- jQuery Latest Version 1.x -->
-        <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
-        
-        <!-- jQuery UI -->
-        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-        
-        <!-- jQuery Easing -->
-        <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-
-        <!-- Bootstrap -->
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        
-        <!-- Mobile Menu -->
-        <script type="text/javascript" src="js/mmenu.min.js"></script>
-        
-        <!-- Harvey - State manager for media queries -->
-        <script type="text/javascript" src="js/harvey.min.js"></script>
-        
-        <!-- Waypoints - Load Elements on View -->
-        <script type="text/javascript" src="js/waypoints.min.js"></script>
-
-        <!-- Facts Counter -->
-        <script type="text/javascript" src="js/facts.counter.min.js"></script>
-
-        <!-- MixItUp - Category Filter -->
-        <script type="text/javascript" src="js/mixitup.min.js"></script>
-
-        <!-- Owl Carousel -->
-        <script type="text/javascript" src="js/owl.carousel.min.js"></script>
-        
-        <!-- Accordion -->
-        <script type="text/javascript" src="js/accordion.min.js"></script>
-        
-        <!-- Responsive Tabs -->
-        <script type="text/javascript" src="js/responsive.tabs.min.js"></script>
-        
-        <!-- Responsive Table -->
-        <script type="text/javascript" src="js/responsive.table.min.js"></script>
-        
-        <!-- Masonry -->
-        <script type="text/javascript" src="js/masonry.min.js"></script>
-        
-        <!-- Carousel Swipe -->
-        <script type="text/javascript" src="js/carousel.swipe.min.js"></script>
-        
-        <!-- bxSlider -->
-        <script type="text/javascript" src="js/bxslider.min.js"></script>
-        
-        <!-- Custom Scripts -->
-        <script type="text/javascript" src="js/main.js"></script>
+        @include('layouts.js')
 
     </body>
 

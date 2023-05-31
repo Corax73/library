@@ -28,6 +28,7 @@ Route::controller(MainController::class)
     Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
     Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
     Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
+    Route::get('/book-{id}', 'showBook')->name('showBook')->middleware('auth');
 });
 
 Route::controller(LoginController::class)

@@ -11,12 +11,12 @@ if (! function_exists('cover_load')) {
      */
 
     function cover_load ($validatedData, Faker $faker) {        
-        $filename = $validatedData['cover'] -> getClientOriginalName();
-        $uniquePrefix = $faker -> swiftBicNumber;
+        $filename = $validatedData['cover']->getClientOriginalName();
+        $uniquePrefix = $faker->swiftBicNumber;
         $uniqueFilename = $uniquePrefix . $filename;
         $filename = $uniqueFilename;
         
-        $validatedData['cover'] -> move(Storage::path('/public/covers'), $filename);
+        $validatedData['cover']->move(Storage::path('/public/covers'), $filename);
         
         return $filename;
     }
