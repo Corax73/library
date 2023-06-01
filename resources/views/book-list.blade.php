@@ -73,7 +73,7 @@
                                     <div class="container">
                                         <div class="filter-box">
                                             <h3>What are you looking for at the library?</h3>
-                                            <form action="http://libraria.demo.presstigers.com/index.html" method="get">
+                                            <form action="/" method="get">
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="sr-only" for="keywords">Search by Keyword</label>
@@ -117,28 +117,6 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-9 col-md-push-3">
-                                    <div class="filter-options margin-list">
-                                        <div class="row">                                            
-                                            <div class="col-md-4 col-sm-4">
-                                                <select name="orderby">
-                                                    <option selected="selected">Default sorting</option>
-                                                    <option>Sort by popularity</option>
-                                                    <option>Sort by rating</option>
-                                                    <option>Sort by newness</option>
-                                                    <option>Sort by price</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 col-sm-4">
-                                                <div class="filter-result">Showing items 1 to 9 of 19 total</div>
-                                            </div>
-                                            <div class="col-md-3 col-sm-3 pull-right">
-                                                <div class="filter-toggle">
-                                                    <a href="books-media-gird-view-v1.html"><i class="glyphicon glyphicon-th-large"></i></a>
-                                                    <a href="books-media-list-view.html" class="active"><i class="glyphicon glyphicon-th-list"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="books-list">
                                         @if ($books)
                                         @foreach ($books as $book)

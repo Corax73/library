@@ -87,12 +87,6 @@
                             <ul>
                                 <li><a href="{{ route('main') }}">Home</a></li>
                                 <li><a href="{{ route('book-list') }}">Books &amp; Media</a></li>
-                                <li><a href="news-events-list-view.html">News &amp; Events</a></li>
-                                <li><a href="#">Kids &amp; Teens</a></li>
-                                <li><a href="services.html">Services</a></li>
-                                <li><a href="#">Research</a></li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div>
                     </div>

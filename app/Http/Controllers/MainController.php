@@ -29,7 +29,7 @@ class MainController extends Controller
     public function bookList()
     {
         if (Auth::check()) {
-            $books = Book::paginate(2);
+            $books = Book::paginate(10);
             return view('book-list', [
                 'books' => $books
             ]);
