@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,11 @@ Route::controller(MainController::class)
     Route::get('/', 'index')->name('main');
     Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
     Route::get('/singin', 'singin')->name('singin');
+    Route::get('/book-{id}', 'showBook')->name('showBook')->middleware('auth');
+});
+
+Route::controller(AdminController::class)
+-> group(function () {
     Route::get('/admin-panel', 'adminPanel')->name('adminPanel')->middleware('auth');
     Route::get('/add-book', 'bookAddForm')->name('bookAddForm')->middleware('auth');
     Route::post('/add-book', 'addBook')->name('addBook')->middleware('auth');
@@ -28,7 +34,6 @@ Route::controller(MainController::class)
     Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
     Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
     Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
-    Route::get('/book-{id}', 'showBook')->name('showBook')->middleware('auth');
 });
 
 Route::controller(LoginController::class)
