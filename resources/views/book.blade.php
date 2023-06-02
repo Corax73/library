@@ -76,7 +76,6 @@
         <article>
         <div class="single-book-box">
             <div class="post-thumbnail">
-                <div class="book-list-icon yellow-icon"></div>
                 <a href="{{ route('showBook', $book->id) }}"><img alt="Book" src="{{ Storage::url('covers/' . $book->cover) }}" /></a>
                 <div class="post-detail">
                     <div class="books-social-sharing">
@@ -152,10 +151,11 @@
                 </footer>
             </div>
             <div class="clear"></div>
+            <div class="row">
+            <div class="col-sm-6">
             <div id="comment_form">
                     <h3>Leave a comment</h3>
-                    
-              		<form action="#" method="post">
+                    <form action="{{ route('createComment', $book->id) }}" method="post">
                       @csrf
                         <div class="form_row">
                             <label><strong>Name</strong> (required)</label>
@@ -168,16 +168,38 @@
                         <div class="form_row">
                             <label><strong>Comment</strong></label>
            					<br />
-                            <textarea  name="description" rows="" cols=""></textarea>
+                            <textarea  name="text" rows="" cols=""></textarea>
                         </div>
-                        @if ($errors->has('description'))
-                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                        @if ($errors->has('text'))
+                        <span class="text-danger">{{ $errors->first('text') }}</span>
                         @endif
                         <input type="submit" name="Submit" value="Submit" class="submit_btn" />
                     </form>
-                    
+                 </div>   
                 </div>
+                </div>
+                <div class="col-sm-6">
+                @if ($comments)
+                <div id="comment_section">
+                    <ol class="comments first_level">
+                        @foreach($comments as $comment)
+                        <li>
+                            <div class="comment_box">
+                                <div class="comment_text">
+                                    <div class="comment_author">{{ $comment -> author }}</div>
+                                    <p>{{ $comment -> created_at }}</p>
+                                    <p class="post">{{ $comment -> description }}</p>
+                                </div>
+                                <div class="cleaner"></div>
+                            </div>
+                        </li>                     
+                        @endforeach
+                    </ol>
+                </div>
+            @endif
         </div>
+    </div>
+</div>
         </article>
         </div>
         </div>

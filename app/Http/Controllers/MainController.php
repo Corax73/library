@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
-use App\Models\Category;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Faker\Generator as Faker;
-use App\Models\ListOfAdmins;
+use App\Models\Comment;
 
 class MainController extends Controller
 {
@@ -46,9 +43,12 @@ class MainController extends Controller
         if (Auth::check()) {
             $id = (integer)$request->id;
             $book = Book::find($id);
-            //dd($book);
+
+            $comments = Comment::where('book_id', $id)->get();
+
             return view('book', [
-                'book' => $book
+                'book' => $book,
+                'comments' => $comments
             ]);
         } else {
             return view('main');

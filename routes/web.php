@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,9 @@ Route::controller(LoginController::class)
     Route::post('/singin', 'login')->name('login');
     Route::post('/singinCreate', 'createUser')->name('createUser');
     Route::post('/logout', 'logout')->name('logout');
+});
+
+Route::controller(CommentController::class)
+-> group(function () {
+    Route::post('/book-{id}', 'createComment')->name('createComment');
 });
