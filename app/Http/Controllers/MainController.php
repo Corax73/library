@@ -70,20 +70,16 @@ class MainController extends Controller
      * and then calculates and saves the new book rating
      * @return redirect
      */
-    public function setRait(Request $request)
+    public function setRating(Request $request)
     {
         if (Auth::check()) {
             $book_id = (integer)$request->id;
-
-            if ($book = Book::find($book_id)) {
-                $rating = new Rating();
-                $rating->book_id = $book_id;
-                $rating->grade = $request->rating;
-                $rating->save();
-                $book->rating = $book->rating()->average('grade');
-                $book->save();
+            $grade = (integer)$request->rating;
+            if (updateRating($book_id, $grade)) {
+                return redirect()->route('book-list');
+            } else {
+                return redirect()->route('main');;
             }
-            return redirect()->route('book-list');
         } else {
             return view('main');
         }

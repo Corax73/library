@@ -180,7 +180,7 @@
                                                                     <li>
                                                                     <div class="rating-area">
                                                                     <strong>Rating: {{ $book->rating ? $book->rating : 'no set' }}</strong>
-                                                                    <form action="{{ route('setRait', $book->id) }}" method="post">
+                                                                    <form action="{{ route('setRating', $book->id) }}" method="post">
                                                                     @csrf
                                                                         <input type="radio" id="star-1" name="rating" value="1">
                                                                         <label for="star-1" title="Оценка «1»">1☆</label>

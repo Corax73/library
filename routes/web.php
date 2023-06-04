@@ -23,7 +23,7 @@ Route::controller(MainController::class)
     Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
     Route::get('/singin', 'singin')->name('singin');
     Route::get('/book-{id}', 'showBook')->name('showBook')->middleware('auth');
-    Route::post('/book-list/{id}', 'setRait')->name('setRait')->middleware('auth');
+    Route::post('/book-list/{id}', 'setRating')->name('setRating')->middleware('auth');
 });
 
 Route::controller(AdminController::class)

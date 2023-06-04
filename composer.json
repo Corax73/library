@@ -22,7 +22,8 @@
     },
     "autoload": {
         "files": [
-            "app/Helpers/HelperCoverLoader.php"
+            "app/Helpers/HelperCoverLoader.php",
+            "app/Helpers/HelperUpdateRating.php"
         ],
         "psr-4": {
             "App\\": "app/",
