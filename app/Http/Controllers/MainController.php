@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use App\Models\Rating;
 
 class MainController extends Controller
 {
@@ -62,5 +63,29 @@ class MainController extends Controller
     public function singin()
     {
         return view('singin');
+    }
+
+    /**
+     * saves the new book grade 
+     * and then calculates and saves the new book rating
+     * @return redirect
+     */
+    public function setRait(Request $request)
+    {
+        if (Auth::check()) {
+            $book_id = (integer)$request->id;
+
+            if ($book = Book::find($book_id)) {
+                $rating = new Rating();
+                $rating->book_id = $book_id;
+                $rating->grade = $request->rating;
+                $rating->save();
+                $book->rating = $book->rating()->average('grade');
+                $book->save();
+            }
+            return redirect()->route('book-list');
+        } else {
+            return view('main');
+        }
     }
 }

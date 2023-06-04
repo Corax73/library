@@ -178,14 +178,24 @@
                                                                     <li><strong>Edition:</strong> First editio</li>
                                                                     <li><strong>Local Availability:</strong> 0 (of 1)</li>
                                                                     <li>
-                                                                        <div class="rating">
-                                                                            <strong>Rating: {{ $book->rating ? $book->rating : 'no set' }}</strong>
-                                                                            <span>☆</span>
-                                                                            <span>☆</span>
-                                                                            <span>☆</span>
-                                                                            <span>☆</span>
-                                                                            <span>☆</span>
-                                                                        </div>
+                                                                    <div class="rating-area">
+                                                                    <strong>Rating: {{ $book->rating ? $book->rating : 'no set' }}</strong>
+                                                                    <form action="{{ route('setRait', $book->id) }}" method="post">
+                                                                    @csrf
+                                                                        <input type="radio" id="star-1" name="rating" value="1">
+                                                                        <label for="star-1" title="Оценка «1»">1☆</label>
+                                                                        <input type="radio" id="star-2" name="rating" value="2">
+                                                                        <label for="star-2" title="Оценка «2»">2☆</label>
+                                                                        <input type="radio" id="star-3" name="rating" value="3">
+                                                                        <label for="star-3" title="Оценка «3»">3☆</label>
+                                                                        <input type="radio" id="star-4" name="rating" value="4">
+                                                                        <label for="star-4" title="Оценка «4»">4☆</label>
+                                                                        <input type="radio" id="star-5" name="rating" value="5">
+                                                                        <label for="star-5" title="Оценка «5»">5☆</label>
+                                                                        <input type="submit" name="Submit" value="Submit" class="submit_btn"/>
+                                                                    </form>
+                                                                    </div>
+                                                                        
                                                                     </li>
                                                                 </ul>                                                                
                                                             </div>
