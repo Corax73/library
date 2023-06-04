@@ -78,7 +78,7 @@ class MainController extends Controller
             if (updateRating($book_id, $grade)) {
                 return redirect()->route('book-list');
             } else {
-                return redirect()->route('main');;
+                return redirect()->route('main');
             }
         } else {
             return view('main');

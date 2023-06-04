@@ -153,7 +153,7 @@
                     </div>
                 </header>
                 <div class="entry-content">
-                    <p>{{ $book->description }}</p>
+                    <p class="post">{{ $book->description }}</p>
                 </div>
                 <footer class="entry-footer">
                     <a class="btn btn-dark-gray" href="{{ route('showBook', $book->id) }}">Read More</a>
@@ -195,9 +195,9 @@
                         <li>
                             <div class="comment_box">
                                 <div class="comment_text">
-                                    <div class="comment_author">{{ $comment -> author }}</div>
-                                    <p>{{ $comment -> created_at }}</p>
-                                    <p class="post">{{ $comment -> description }}</p>
+                                    <div class="comment_author">{{ $comment->author }}</div>
+                                    <p>{{ $comment->created_at }}</p>
+                                    <p class="post">{{ $comment->text }}</p>
                                 </div>
                                 <div class="cleaner"></div>
                             </div>

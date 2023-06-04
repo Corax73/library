@@ -127,4 +127,31 @@ class AdminController extends Controller
         }
         return redirect('/manage-users');
     }
+
+    /**
+     * view manage books page
+     * @return view
+     */
+    public function manageBooks()
+    {
+        $books = Book::all();
+        
+        return view('layouts.manage-books', [
+            'books' => $books
+        ]);
+    }
+
+    /**
+     * deletes a book
+     * @return redirect
+     */
+    public function destroyBook(Request $request)
+    {
+        $id = (integer)$request->id;
+
+        $user = Book::find($id);
+        $user->delete();
+
+        return redirect('/manage-books');
+    }
 }

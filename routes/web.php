@@ -36,6 +36,8 @@ Route::controller(AdminController::class)
     Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
     Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
     Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
+    Route::get('/manage-books', 'manageBooks')->name('manageBooks')->middleware('auth');
+    Route::delete('/delete-book/{id}', 'destroyBook')->name('destroyBook')->middleware('auth');
 });
 
 Route::controller(LoginController::class)

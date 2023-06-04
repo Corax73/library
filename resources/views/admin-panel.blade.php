@@ -74,6 +74,7 @@
             <a href="{{ route('bookAddForm') }}" class="btn btn-primary">You can add book</a>
             <a href="{{ route('categoryAddForm') }}" class="btn btn-primary">You can add category</a>
             <a href="{{ route('manageUsers') }}" class="btn btn-primary">You can manage users</a>
+            <a href="{{ route('manageBooks') }}" class="btn btn-primary">You can manage books</a>
         </div>
         <!-- Start: Footer -->
         @include('layouts.footer')
