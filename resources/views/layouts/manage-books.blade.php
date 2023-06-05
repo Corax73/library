@@ -4,10 +4,10 @@
 <div class="container">
     <table border="5px" align="center">
                      <thead>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Slug</th>
                         <th>Created_at</th>
-                        <th>IsAdmin</th>
                         <th>Delete</th>
                     </thead>
                     <tbody>
@@ -15,7 +15,7 @@
                            @if($book)
                         <tr>
                             <td class="table-text">
-                                <p>{{ $book->title }}</p>
+                                <p><a href="{{ route('bookEdit', $book->id) }}">{{ $book->title }}</a></p>
                             </td>
                             <td class="table-text">
                                 <p>{{ $book->author }}</p>

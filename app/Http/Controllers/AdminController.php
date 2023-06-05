@@ -154,4 +154,55 @@ class AdminController extends Controller
 
         return redirect('/manage-books');
     }
+
+     /**
+     * view manage book page
+     * @return view
+     */
+    public function bookEdit(Request $request)
+    {
+        if (Auth::check()) {
+            $book = Book::find((integer)$request->id);
+
+            return view('layouts.manage-book', [
+                'book' => $book
+        ]);
+        }
+    }
+
+    /**
+     * editing book margins
+     * @return view
+     */
+    public function bookUpdate(Request $request, Faker $faker)
+    {
+        if (Auth::check()) {
+            $book = Book::find((integer)$request->id);
+            
+            if ($request->cover) {
+                $validatedData = $request->validate( [
+                    'title' => 'required|unique:books|min:3',
+                    'slug' => 'required|unique:books',
+                    'author' => 'required|min:5',
+                    'description' => 'required|min:30',
+                    'cover' => 'required'
+                ]);
+                
+                $filename = cover_update($book, $validatedData, $faker);
+                $validatedData['cover'] = $filename;
+            } else {
+                $validatedData = $request->validate( [
+                    'title' => 'required|unique:books|min:3',
+                    'slug' => 'required|unique:books',
+                    'author' => 'required|min:5',
+                    'description' => 'required|min:30',
+                ]);
+            }
+            $book->update($validatedData);
+            
+            return view('layouts.manage-book', [
+                'book' => $book
+            ]);
+        }
+    }
 }

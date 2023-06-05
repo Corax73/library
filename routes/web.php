@@ -38,6 +38,8 @@ Route::controller(AdminController::class)
     Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
     Route::get('/manage-books', 'manageBooks')->name('manageBooks')->middleware('auth');
     Route::delete('/delete-book/{id}', 'destroyBook')->name('destroyBook')->middleware('auth');
+    Route::get('/book-edit/{id}', 'bookEdit')->name('bookEdit')->middleware('auth');
+    Route::patch('/book-{id}', 'bookUpdate')->name('bookUpdate')->middleware('auth');
 });
 
 Route::controller(LoginController::class)
