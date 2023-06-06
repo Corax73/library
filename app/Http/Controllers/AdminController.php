@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use App\Models\ListOfAdmins;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -31,7 +32,9 @@ class AdminController extends Controller
      */
     public function adminPanel()
     {
-        return view('admin-panel');
+        if (Auth::check()) {
+            return view('admin-panel');
+        }
     }
     /**
      * adds book instance and saves
@@ -39,20 +42,21 @@ class AdminController extends Controller
      */
     public function addBook(Request $request, Faker $faker)
     {
-        $validatedData = $request -> validate( [
-            'title' => 'required|unique:books|min:3',
-            'slug' => 'required|unique:books',
-            'author' => 'required|min:5',
-            'description' => 'required|min:30',
-            'cover' => 'required'
-        ]);
+        if (Auth::check()) {
+            $validatedData = $request -> validate( [
+                'title' => 'required|unique:books|min:3',
+                'slug' => 'required|unique:books',
+                'author' => 'required|min:5',
+                'description' => 'required|min:30',
+                'cover' => 'required'
+            ]);
+            
+            $filename = cover_load($validatedData, $faker);
+            $validatedData['cover'] = $filename;
+            Book::create($validatedData);
 
-        $filename = cover_load($validatedData, $faker);
-
-        $validatedData['cover'] = $filename;
-        Book::create($validatedData);
-
-        return redirect()->route('book-list');
+            return redirect()->route('book-list');
+        }
     }
     
     /**
@@ -70,18 +74,20 @@ class AdminController extends Controller
 
     /**
      * add category and save
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function addCategory(Request $request)
     {
-        $validatedData = $request->validate( [
-            'title' => 'required|unique:categories|min:3',
-            'slug' => 'required|unique:categories'
-        ]);
+        if (Auth::check()) {
+            $validatedData = $request->validate( [
+                'title' => 'required|unique:categories|min:3',
+                'slug' => 'required|unique:categories'
+            ]);
+            Category::create($validatedData);
 
-        Category::create($validatedData);
-
-        return redirect()->route('book-list');
+            return redirect()->route('book-list');
+        }
     }
 
     /**
@@ -90,42 +96,69 @@ class AdminController extends Controller
      */
     public function manageUsers()
     {
-        $users = User::all();
-        
-        return view('layouts.manage-users', [
-            'users' => $users
-        ]);
+        if (Auth::check()) {
+            $users = User::all();
+            
+            return view('layouts.manage-users', [
+                'users' => $users
+            ]);
+        }
+    }
+
+    /**
+     * editing user margins
+     * @param  \Illuminate\Http\Request $request
+     * @return redirect
+     */
+    public function userUpdate(Request $request)
+    {
+        if (Auth::check()) {
+            $user = User::find((integer)$request->id);
+            
+            $validatedData = $request->validate( [
+                'name' => 'required|unique:users|min:3',
+                'email' => 'required|unique:users|email'
+            ]);
+            $user->update($validatedData);
+            
+            return redirect()->route('manageUsers');
+        }       
     }
 
     /**
      * deletes a user
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function destroyUser(Request $request)
     {
-        $id = (integer)$request->id;
-
-        $user = User::find($id);
-        $user->delete();
-
-        return redirect('/manage-users');
+        if (Auth::check()) {
+            $id = (integer)$request->id;
+            $user = User::find($id);
+            $user->delete();
+            
+            return redirect()->route('manageUsers');
+        }
     }
 
     /**
      * sets user role
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function setRole(Request $request)
     {
-        $id['user_id'] = (integer)$request->id;
-        $user = User::find($id);
-
-        if ($user && !$user[0]->isAdmin) {
-            ListOfAdmins::create($id);
-        } elseif ($user && $user[0]->isAdmin) {
-            ListOfAdmins::where('user_id', $id)->delete();
+        if (Auth::check()) {
+            $id['user_id'] = (integer)$request->id;
+            $user = User::find($id);
+            
+            if ($user && !$user[0]->isAdmin) {
+                ListOfAdmins::create($id);
+            } elseif ($user && $user[0]->isAdmin) {
+                ListOfAdmins::where('user_id', $id)->delete();
+            }
+            return redirect()->route('manageUsers');
         }
-        return redirect('/manage-users');
     }
 
     /**
@@ -134,29 +167,34 @@ class AdminController extends Controller
      */
     public function manageBooks()
     {
-        $books = Book::all();
-        
-        return view('layouts.manage-books', [
-            'books' => $books
-        ]);
+        if (Auth::check()) {
+            $books = Book::all();
+            
+            return view('layouts.manage-books', [
+                'books' => $books
+            ]);
+        }
     }
 
     /**
      * deletes a book
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function destroyBook(Request $request)
     {
-        $id = (integer)$request->id;
-
-        $user = Book::find($id);
-        $user->delete();
-
-        return redirect('/manage-books');
+        if (Auth::check()) {
+            $id = (integer)$request->id;
+            $user = Book::find($id);
+            $user->delete();
+            
+            return redirect()->route('manageBooks');
+        }
     }
 
      /**
      * view manage book page
+     * @param  \Illuminate\Http\Request $request
      * @return view
      */
     public function bookEdit(Request $request)
@@ -172,6 +210,8 @@ class AdminController extends Controller
 
     /**
      * editing book margins
+     * @param  \Illuminate\Http\Request $request
+     * @param Faker @faker
      * @return view
      */
     public function bookUpdate(Request $request, Faker $faker)

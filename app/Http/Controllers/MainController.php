@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
-use App\Models\Rating;
 
 class MainController extends Controller
 {
@@ -37,6 +36,7 @@ class MainController extends Controller
 
     /**
      * show book page
+     * @param  \Illuminate\Http\Request $request
      * @return view
      */
     public function showBook(Request $request)
@@ -68,6 +68,7 @@ class MainController extends Controller
     /**
      * saves the new book grade 
      * and then calculates and saves the new book rating
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function setRating(Request $request)

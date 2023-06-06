@@ -8,6 +8,7 @@
                         <th>Author</th>
                         <th>Slug</th>
                         <th>Created_at</th>
+                        <th>Description</th>
                         <th>Delete</th>
                     </thead>
                     <tbody>

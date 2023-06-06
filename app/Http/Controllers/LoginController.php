@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Validator;
 
 class LoginController extends Controller
 {
@@ -32,6 +31,7 @@ class LoginController extends Controller
 
     /**
      * user login verification
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function login(Request $request)

@@ -42,7 +42,7 @@
                 <span class="text-danger">{{ $errors->first('cover') }}</span>
                 @endif
             </div>
-            <button type="submit" class="btn btn-primary">Обновить</button>
+            <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
 @endsection

@@ -11,6 +11,7 @@ class CommentController extends Controller
 {
     /**
      * adds comment instance and saves
+     * @param  \Illuminate\Http\Request $request
      * @return redirect
      */
     public function createComment(Request $request)

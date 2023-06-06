@@ -40,6 +40,7 @@ Route::controller(AdminController::class)
     Route::delete('/delete-book/{id}', 'destroyBook')->name('destroyBook')->middleware('auth');
     Route::get('/book-edit/{id}', 'bookEdit')->name('bookEdit')->middleware('auth');
     Route::patch('/book-{id}', 'bookUpdate')->name('bookUpdate')->middleware('auth');
+    Route::patch('/user-{id}', 'userUpdate')->name('userUpdate')->middleware('auth');
 });
 
 Route::controller(LoginController::class)
