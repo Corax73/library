@@ -28,19 +28,19 @@ Route::controller(MainController::class)
 
 Route::controller(AdminController::class)
 -> group(function () {
-    Route::get('/admin-panel', 'adminPanel')->name('adminPanel')->middleware('auth');
-    Route::get('/add-book', 'bookAddForm')->name('bookAddForm')->middleware('auth');
-    Route::post('/add-book', 'addBook')->name('addBook')->middleware('auth');
-    Route::get('/add-category', 'categoryAddForm')->name('categoryAddForm')->middleware('auth');
-    Route::post('/add-category', 'addCategory')->name('addCategory')->middleware('auth');
-    Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('auth');
-    Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('auth');
-    Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('auth');
-    Route::get('/manage-books', 'manageBooks')->name('manageBooks')->middleware('auth');
-    Route::delete('/delete-book/{id}', 'destroyBook')->name('destroyBook')->middleware('auth');
-    Route::get('/book-edit/{id}', 'bookEdit')->name('bookEdit')->middleware('auth');
-    Route::patch('/book-{id}', 'bookUpdate')->name('bookUpdate')->middleware('auth');
-    Route::patch('/user-{id}', 'userUpdate')->name('userUpdate')->middleware('auth');
+    Route::get('/admin-panel', 'adminPanel')->name('adminPanel')->middleware('admin');
+    Route::get('/add-book', 'bookAddForm')->name('bookAddForm')->middleware('admin');
+    Route::post('/add-book', 'addBook')->name('addBook')->middleware('admin');
+    Route::get('/add-category', 'categoryAddForm')->name('categoryAddForm')->middleware('admin');
+    Route::post('/add-category', 'addCategory')->name('addCategory')->middleware('admin');
+    Route::get('/manage-users', 'manageUsers')->name('manageUsers')->middleware('admin');
+    Route::delete('/delete-user/{id}', 'destroyUser')->name('destroyUser')->middleware('admin');
+    Route::post('/set-role/{id}', 'setRole')->name('setRole')->middleware('admin');
+    Route::get('/manage-books', 'manageBooks')->name('manageBooks')->middleware('admin');
+    Route::delete('/delete-book/{id}', 'destroyBook')->name('destroyBook')->middleware('admin');
+    Route::get('/book-edit/{id}', 'bookEdit')->name('bookEdit')->middleware('admin');
+    Route::patch('/book-{id}', 'bookUpdate')->name('bookUpdate')->middleware('admin');
+    Route::patch('/user-{id}', 'userUpdate')->name('userUpdate')->middleware('admin');
 });
 
 Route::controller(LoginController::class)
@@ -52,5 +52,5 @@ Route::controller(LoginController::class)
 
 Route::controller(CommentController::class)
 -> group(function () {
-    Route::post('/book-{id}', 'createComment')->name('createComment');
+    Route::post('/book-{id}', 'createComment')->name('createComment')->middleware('auth');
 });

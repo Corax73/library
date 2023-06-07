@@ -132,19 +132,19 @@
                                 <li>
                                 <div class="rating-area">
                                                                     <strong>Rating: {{ $book->rating ? $book->rating : 'no set' }}</strong>
-                                                                    <form action="{{ route('setRating', $book->id) }}" method="post">
+                                                                    <form id="rating" action="{{ route('setRating', $book->id) }}" method="post">
                                                                     @csrf
-                                                                        <input type="radio" id="star-1" name="rating" value="1">
+                                                                        <input type="radio" name="rating" value="1">
                                                                         <label for="star-1" title="Оценка «1»">1☆</label>
-                                                                        <input type="radio" id="star-2" name="rating" value="2">
+                                                                        <input type="radio" name="rating" value="2">
                                                                         <label for="star-2" title="Оценка «2»">2☆</label>
-                                                                        <input type="radio" id="star-3" name="rating" value="3">
+                                                                        <input type="radio" name="rating" value="3">
                                                                         <label for="star-3" title="Оценка «3»">3☆</label>
-                                                                        <input type="radio" id="star-4" name="rating" value="4">
+                                                                        <input type="radio" name="rating" value="4">
                                                                         <label for="star-4" title="Оценка «4»">4☆</label>
-                                                                        <input type="radio" id="star-5" name="rating" value="5">
+                                                                        <input type="radio" name="rating" value="5">
                                                                         <label for="star-5" title="Оценка «5»">5☆</label>
-                                                                        <input type="submit" name="Submit" value="Submit" class="submit_btn"/>
+                                                                        <input type="submit" id="btnRating" name="Submit" value="Submit" class="submit_btn"/>
                                                                     </form>
                                                                     </div>
                                 </li>

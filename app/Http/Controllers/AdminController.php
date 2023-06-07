@@ -14,49 +14,42 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     /**
-     * book add page view
-     * @return view
-     */
-    public function bookAddForm()
-    {
-        if (Auth::user()->isAdmin) {
-            return view('layouts.add-book-form');
-        } else {
-            return view('main');
-        }
-    }
-
-    /**
      * view admin panel page
      * @return view
      */
     public function adminPanel()
     {
-        if (Auth::check()) {
-            return view('admin-panel');
-        }
+        return view('admin-panel');
     }
+    
+    /**
+     * book add page view
+     * @return view
+     */
+    public function bookAddForm()
+    {
+        return view('layouts.add-book-form');
+    }
+
     /**
      * adds book instance and saves
      * @return redirect
      */
     public function addBook(Request $request, Faker $faker)
     {
-        if (Auth::check()) {
-            $validatedData = $request -> validate( [
-                'title' => 'required|unique:books|min:3',
-                'slug' => 'required|unique:books',
-                'author' => 'required|min:5',
-                'description' => 'required|min:30',
-                'cover' => 'required'
-            ]);
-            
-            $filename = cover_load($validatedData, $faker);
-            $validatedData['cover'] = $filename;
-            Book::create($validatedData);
-
-            return redirect()->route('book-list');
-        }
+        $validatedData = $request -> validate( [
+            'title' => 'required|unique:books|min:3',
+            'slug' => 'required|unique:books',
+            'author' => 'required|min:5',
+            'description' => 'required|min:30',
+            'cover' => 'required'
+        ]);
+        
+        $filename = cover_load($validatedData, $faker);
+        $validatedData['cover'] = $filename;
+        Book::create($validatedData);
+        
+        return redirect()->route('manageBooks');
     }
     
     /**
@@ -65,11 +58,7 @@ class AdminController extends Controller
      */
     public function categoryAddForm()
     {
-        if (Auth::user()->isAdmin) {
-            return view('layouts.add-category-form');
-        } else {
-            return view('main');
-        }
+        return view('layouts.add-category-form');
     }
 
     /**
@@ -79,15 +68,13 @@ class AdminController extends Controller
      */
     public function addCategory(Request $request)
     {
-        if (Auth::check()) {
-            $validatedData = $request->validate( [
-                'title' => 'required|unique:categories|min:3',
-                'slug' => 'required|unique:categories'
-            ]);
-            Category::create($validatedData);
+        $validatedData = $request->validate( [
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
+        ]);
+        Category::create($validatedData);
 
-            return redirect()->route('book-list');
-        }
+        return redirect()->route('manageBooks');
     }
 
     /**
@@ -96,13 +83,11 @@ class AdminController extends Controller
      */
     public function manageUsers()
     {
-        if (Auth::check()) {
-            $users = User::all();
-            
-            return view('layouts.manage-users', [
-                'users' => $users
-            ]);
-        }
+        $users = User::all();
+
+        return view('layouts.manage-users', [
+            'users' => $users
+        ]);
     }
 
     /**
@@ -112,17 +97,14 @@ class AdminController extends Controller
      */
     public function userUpdate(Request $request)
     {
-        if (Auth::check()) {
-            $user = User::find((integer)$request->id);
+        $user = User::find((integer)$request->id);
+        $validatedData = $request->validate( [
+            'name' => 'required|unique:users|min:3',
+            'email' => 'required|unique:users|email'
+        ]);
+        $user->update($validatedData);
             
-            $validatedData = $request->validate( [
-                'name' => 'required|unique:users|min:3',
-                'email' => 'required|unique:users|email'
-            ]);
-            $user->update($validatedData);
-            
-            return redirect()->route('manageUsers');
-        }       
+        return redirect()->route('manageUsers');
     }
 
     /**
@@ -132,13 +114,11 @@ class AdminController extends Controller
      */
     public function destroyUser(Request $request)
     {
-        if (Auth::check()) {
-            $id = (integer)$request->id;
-            $user = User::find($id);
-            $user->delete();
+        $id = (integer)$request->id;
+        $user = User::find($id);
+        $user->delete();
             
-            return redirect()->route('manageUsers');
-        }
+        return redirect()->route('manageUsers');
     }
 
     /**
@@ -148,17 +128,15 @@ class AdminController extends Controller
      */
     public function setRole(Request $request)
     {
-        if (Auth::check()) {
-            $id['user_id'] = (integer)$request->id;
-            $user = User::find($id);
+        $id['user_id'] = (integer)$request->id;
+        $user = User::find($id);
             
-            if ($user && !$user[0]->isAdmin) {
-                ListOfAdmins::create($id);
-            } elseif ($user && $user[0]->isAdmin) {
-                ListOfAdmins::where('user_id', $id)->delete();
-            }
-            return redirect()->route('manageUsers');
+        if ($user && !$user[0]->isAdmin) {
+            ListOfAdmins::create($id);
+        } elseif ($user && $user[0]->isAdmin) {
+            ListOfAdmins::where('user_id', $id)->delete();
         }
+        return redirect()->route('manageUsers');
     }
 
     /**
@@ -167,13 +145,11 @@ class AdminController extends Controller
      */
     public function manageBooks()
     {
-        if (Auth::check()) {
-            $books = Book::all();
-            
-            return view('layouts.manage-books', [
-                'books' => $books
-            ]);
-        }
+        //$books = Book::all();
+        $books = Book::paginate(10);
+        return view('layouts.manage-books', [
+            'books' => $books
+        ]);
     }
 
     /**
@@ -183,13 +159,11 @@ class AdminController extends Controller
      */
     public function destroyBook(Request $request)
     {
-        if (Auth::check()) {
-            $id = (integer)$request->id;
-            $user = Book::find($id);
-            $user->delete();
+        $id = (integer)$request->id;
+        $user = Book::find($id);
+        $user->delete();
             
-            return redirect()->route('manageBooks');
-        }
+        return redirect()->route('manageBooks');
     }
 
      /**
@@ -199,13 +173,11 @@ class AdminController extends Controller
      */
     public function bookEdit(Request $request)
     {
-        if (Auth::check()) {
-            $book = Book::find((integer)$request->id);
+        $book = Book::find((integer)$request->id);
 
-            return view('layouts.manage-book', [
-                'book' => $book
+        return view('layouts.manage-book', [
+            'book' => $book
         ]);
-        }
     }
 
     /**
@@ -216,33 +188,31 @@ class AdminController extends Controller
      */
     public function bookUpdate(Request $request, Faker $faker)
     {
-        if (Auth::check()) {
-            $book = Book::find((integer)$request->id);
+        $book = Book::find((integer)$request->id);
             
-            if ($request->cover) {
-                $validatedData = $request->validate( [
-                    'title' => 'required|unique:books|min:3',
-                    'slug' => 'required|unique:books',
-                    'author' => 'required|min:5',
-                    'description' => 'required|min:30',
-                    'cover' => 'required'
-                ]);
+        if ($request->cover) {
+            $validatedData = $request->validate( [
+                'title' => 'required|unique:books|min:3',
+                'slug' => 'required|unique:books',
+                'author' => 'required|min:5',
+                'description' => 'required|min:30',
+                'cover' => 'required'
+            ]);
                 
-                $filename = cover_update($book, $validatedData, $faker);
-                $validatedData['cover'] = $filename;
-            } else {
-                $validatedData = $request->validate( [
-                    'title' => 'required|unique:books|min:3',
-                    'slug' => 'required|unique:books',
-                    'author' => 'required|min:5',
-                    'description' => 'required|min:30',
-                ]);
-            }
-            $book->update($validatedData);
-            
-            return view('layouts.manage-book', [
-                'book' => $book
+            $filename = cover_update($book, $validatedData, $faker);
+            $validatedData['cover'] = $filename;
+        } else {
+            $validatedData = $request->validate( [
+                'title' => 'required|unique:books|min:3',
+                'slug' => 'required|unique:books',
+                'author' => 'required|min:5',
+                'description' => 'required|min:30',
             ]);
         }
+        $book->update($validatedData);
+            
+        return view('layouts.manage-book', [
+            'book' => $book
+        ]);
     }
 }
