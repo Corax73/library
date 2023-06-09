@@ -74,7 +74,7 @@ class AdminController extends Controller
         ]);
         Category::create($validatedData);
 
-        return redirect()->route('manageBooks');
+        return redirect()->route('manageCategories');
     }
 
     /**
@@ -83,7 +83,7 @@ class AdminController extends Controller
      */
     public function manageUsers()
     {
-        $users = User::all();
+        $users = User::paginate(10);
 
         return view('layouts.manage-users', [
             'users' => $users
@@ -214,5 +214,51 @@ class AdminController extends Controller
         return view('layouts.manage-book', [
             'book' => $book
         ]);
+    }
+
+    /**
+     * view manage categories page
+     * @return view
+     */
+    public function manageCategories()
+    {
+        $categories = Category::paginate(10);
+
+        return view('layouts.manage-categories', [
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * editing category margins
+     * @param  \Illuminate\Http\Request $request
+     * @return view
+     */
+    public function categoryUpdate(Request $request)
+    {
+        $category = Category::find((integer)$request->id);
+
+        $validatedData = $request->validate( [
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
+        ]);
+        
+        $category->update($validatedData);
+            
+        return redirect()->route('manageCategories');
+    }
+
+    /**
+     * deletes a category
+     * @param  \Illuminate\Http\Request $request
+     * @return redirect
+     */
+    public function destroyCategory(Request $request)
+    {
+        $id = (integer)$request->id;
+        $category = Category::find($id);
+        $category->delete();
+            
+        return redirect()->route('manageCategories');
     }
 }

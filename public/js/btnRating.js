@@ -1,6 +1,9 @@
 const btnRating = document.getElementById('btnRating');
 const rating = document.getElementById('rating');
 
+/**
+ * button activation
+ */
 function activate() {
     btnRating.disabled = false;
 }

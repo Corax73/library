@@ -2,6 +2,7 @@
 
 @section('form')
 <div class="container">
+{{ $users->links() }}
     <table border="5px" align="center">
                      <thead>
                         <th>Name</th>
@@ -69,5 +70,6 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $users->links() }}
 </div>
 @endsection

@@ -41,6 +41,9 @@ Route::controller(AdminController::class)
     Route::get('/book-edit/{id}', 'bookEdit')->name('bookEdit')->middleware('admin');
     Route::patch('/book-{id}', 'bookUpdate')->name('bookUpdate')->middleware('admin');
     Route::patch('/user-{id}', 'userUpdate')->name('userUpdate')->middleware('admin');
+    Route::get('/manage-categories', 'manageCategories')->name('manageCategories')->middleware('admin');
+    Route::delete('/delete-category/{id}', 'destroyCategory')->name('destroyCategory')->middleware('admin');
+    Route::patch('/category-{id}', 'categoryUpdate')->name('categoryUpdate')->middleware('admin');
 });
 
 Route::controller(LoginController::class)

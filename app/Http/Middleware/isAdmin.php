@@ -19,7 +19,7 @@ class isAdmin
         if (auth()->user()->isAdmin) {
             return $next($request);
         } else {
-            abort(403, "You are not authorised");
+            abort(403, 'You are not logged in as an admin');
         }
     }
 }
