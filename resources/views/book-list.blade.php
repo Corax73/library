@@ -124,7 +124,7 @@
                                             <div class="single-book-box">                                                
                                                 <div class="post-thumbnail">
                                                     <div class="book-list-icon yellow-icon"></div>
-                                                    <a href="{{ route('showBook', $book->id) }}"><img alt="Book" src="{{ Storage::url('covers/' . $book->cover) }}" /></a>                                                                 </div>
+                                                    <a href="{{ route('showBook', ['id' => $book->id, 'slug' => $book->slug]) }}"><img alt="Book" src="{{ Storage::url('covers/' . $book->cover) }}" /></a>                                                                 </div>
                                                 <div class="post-detail">
                                                     <div class="books-social-sharing">
                                                         <ul>
@@ -167,7 +167,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <h3 class="entry-title">
-                                                                    <a href="{{ route('showBook', $book->id) }}">{{ $book->title }}</a>
+                                                                    <a href="{{ route('showBook', ['id' => $book->id, 'slug' => $book->slug]) }}">{{ $book->title }}</a>
                                                                 </h3>
                                                                 <ul>
                                                                     <li><strong>Author:</strong>{{ $book->author }}</li>
@@ -190,7 +190,7 @@
                                                         <p>{{ $book->description }}</p>
                                                     </div>
                                                     <footer class="entry-footer">
-                                                        <a class="btn btn-dark-gray" href="{{ route('showBook', $book->id) }}">Read More</a>
+                                                        <a class="btn btn-dark-gray" href="{{ route('showBook', ['id' => $book->id, 'slug' => $book->slug]) }}">Read More</a>
                                                     </footer>
                                                 </div>
                                                 <div class="clear"></div>

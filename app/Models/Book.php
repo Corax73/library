@@ -27,4 +27,9 @@ class Book extends Model
     {
         return $this->hasMany('App\Models\Rating');
     }
+
+    public function category()
+    {
+        return $this->hasMany(Category::class, 'slug', 'slug');
+    }
 }

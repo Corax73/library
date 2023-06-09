@@ -68,7 +68,8 @@ class MainController extends Controller
         $book_id = (integer)$request->id;
         $grade = (integer)$request->rating;
         if (updateRating($book_id, $grade)) {
-            return redirect()->route('showBook', $book_id);
+            $book = Book::find($book_id);
+            return redirect()->route('showBook', ['id' => $book->id, 'slug' => $book->slug]);
         } else {
             return redirect()->route('main');
         }

@@ -22,8 +22,8 @@ Route::controller(MainController::class)
     Route::get('/', 'index')->name('main');
     Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
     Route::get('/singin', 'singin')->name('singin');
-    Route::get('/book-{id}', 'showBook')->name('showBook')->middleware('auth');
-    Route::post('/book-list/{id}', 'setRating')->name('setRating')->middleware('auth');
+    Route::get('/category-{slug}-book-{id}', 'showBook')->name('showBook')->middleware('auth');
+    Route::post('/book-{id}-set-rating', 'setRating')->name('setRating')->middleware('auth');
 });
 
 Route::controller(AdminController::class)
