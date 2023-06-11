@@ -30,6 +30,6 @@ class Book extends Model
 
     public function category()
     {
-        return $this->hasMany(Category::class, 'slug', 'slug');
+        return $this->belongsTo(Category::class, 'slug', 'slug');
     }
 }

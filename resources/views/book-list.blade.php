@@ -73,7 +73,9 @@
                                     <div class="container">
                                         <div class="filter-box">
                                             <h3>What are you looking for at the library?</h3>
-                                            <form action="/" method="get">
+                                            @if ($categories)
+                                            <form action="{{ route('book-ListCat') }}" method="post">
+                                            @csrf
                                                 <div class="col-md-4 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="sr-only" for="keywords">Search by Keyword</label>
@@ -82,25 +84,11 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-6">
                                                     <div class="form-group">
-                                                        <select name="catalog" id="catalog" class="form-control">
-                                                            <option>Search the Catalog</option>
-                                                            <option>Catalog 01</option>
-                                                            <option>Catalog 02</option>
-                                                            <option>Catalog 03</option>
-                                                            <option>Catalog 04</option>
-                                                            <option>Catalog 05</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <div class="form-group">
                                                         <select name="category" id="category" class="form-control">
-                                                            <option>All Categories</option>
-                                                            <option>Category 01</option>
-                                                            <option>Category 02</option>
-                                                            <option>Category 03</option>
-                                                            <option>Category 04</option>
-                                                            <option>Category 05</option>
+                                                            <option value="0">All Categories</option>
+                                                            @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -110,6 +98,7 @@
                                                     </div>
                                                 </div>
                                             </form>
+                                            @endif
                                         </div>
                                     </div>
                                 </section>
@@ -171,6 +160,7 @@
                                                                 </h3>
                                                                 <ul>
                                                                     <li><strong>Author:</strong>{{ $book->author }}</li>
+                                                                    <li><strong>Category:</strong>{{ $book->category?->title }}</li>
                                                                 </ul>
                                                             </div>
                                                             <div class="col-sm-6">
@@ -200,7 +190,7 @@
                                         @endif
                                     </div>
                                     <div>
-                                        {{ $books->links() }}
+                                    {{ $books->links() }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-md-pull-9">

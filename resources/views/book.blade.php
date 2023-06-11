@@ -123,6 +123,7 @@
                             </h3>
                             <ul>
                                 <li><strong>Author:</strong>{{ $book->author }}</li>
+                                <li><strong>Category:</strong>{{ $book->category?->title }}</li>
                             </ul>
                         </div>
                         <div class="col-sm-6">

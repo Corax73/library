@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use App\Models\Category;
 
 class MainController extends Controller
 {
@@ -24,10 +25,34 @@ class MainController extends Controller
      */
     public function bookList()
     {
+        $categories = Category::all();
         $books = Book::paginate(10);
+        
         return view('book-list', [
-            'books' => $books
+            'books' => $books,
+            'categories' => $categories
         ]);
+    }
+
+    /**
+     * showing books by category
+     * @return view | redirect
+     */
+    public function bookListCat(Request $request)
+    {
+        $categories = Category::all();
+        $books = Book::paginate(10);
+        $id = (integer)$request->category;
+        if(isset($id) && $id !== 0){
+            $category = Category::find($id);
+            $books = Book::where('slug', $category->title)->paginate(10);
+            
+            return view('book-list', [
+                'books' => $books,
+                'categories' => $categories
+            ]);
+        }
+        return redirect()->route('book-list');
     }
 
     /**
