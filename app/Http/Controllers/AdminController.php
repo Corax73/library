@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use App\Models\ListOfAdmins;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BooksImport;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -260,5 +263,11 @@ class AdminController extends Controller
         $category->delete();
             
         return redirect()->route('manageCategories');
+    }
+
+    public function parse():void
+    {
+        $array = Excel::toArray(new BooksImport, Storage::path('/public/') . 'books1.xlsx' );
+        dd($array);
     }
 }
