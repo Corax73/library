@@ -19,7 +19,7 @@ class BooksImport implements
     {
         return new Book([
            'title' => $row[0],
-           'slug' => $row[2],
+           'slug' => $row[3],
            'author' => $row[1],
            'description' => 'no set',
            'cover' => 'no set',

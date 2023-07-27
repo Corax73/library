@@ -45,7 +45,8 @@ Route::controller(AdminController::class)
     Route::get('/manage-categories', 'manageCategories')->name('manageCategories')->middleware('admin');
     Route::delete('/delete-category/{id}', 'destroyCategory')->name('destroyCategory')->middleware('admin');
     Route::patch('/category-{id}', 'categoryUpdate')->name('categoryUpdate')->middleware('admin');
-    Route::get('/parse', 'parse')->name('parse')->middleware('admin');
+    Route::get('/parse', 'parseForm')->name('parseForm')->middleware('admin');
+    Route::post('/parse', 'parse')->name('parse')->middleware('admin');
 });
 
 Route::controller(LoginController::class)

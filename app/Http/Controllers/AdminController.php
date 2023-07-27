@@ -12,7 +12,9 @@ use App\Models\ListOfAdmins;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\BooksImport;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use PhpOption\None;
 
 class AdminController extends Controller
 {
@@ -265,9 +267,26 @@ class AdminController extends Controller
         return redirect()->route('manageCategories');
     }
 
-    public function parse():void
+    public function parseForm():\Illuminate\View\View
     {
-        $array = Excel::toArray(new BooksImport, Storage::path('/public/') . 'books1.xlsx' );
-        dd($array);
+        $status = '';
+        return view('layouts.add-from-excel', [
+            'status' => $status
+        ]);
+    }
+
+    public function parse(Request $request):\Illuminate\View\View
+    {
+        $validatedData = $request->validate( [
+            'table' => 'required'
+        ]);
+        $filename = explode('.', $validatedData['table']->getClientOriginalName());
+        if (count($filename) == 2 && $filename[1] === 'xlsx') {
+            Excel::import(new BooksImport, $request->table);
+            $status = 'Books added';
+            return view('layouts.add-from-excel', [
+                'status' => $status
+            ]);
+        }
     }
 }
