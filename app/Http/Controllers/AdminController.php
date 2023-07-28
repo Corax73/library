@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use App\Models\ListOfAdmins;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BooksImport;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use PhpOption\None;
 
 class AdminController extends Controller
 {
@@ -145,7 +150,6 @@ class AdminController extends Controller
      */
     public function manageBooks()
     {
-        //$books = Book::all();
         $books = Book::paginate(10);
         return view('layouts.manage-books', [
             'books' => $books
@@ -260,5 +264,37 @@ class AdminController extends Controller
         $category->delete();
             
         return redirect()->route('manageCategories');
+    }
+
+    /**
+     * view parse page
+     * @return view
+     */
+    public function parseForm():\Illuminate\View\View
+    {
+        $status = '';
+        return view('layouts.add-from-excel', [
+            'status' => $status
+        ]);
+    }
+
+    /**
+     * add books to the database from a file
+     * @param  \Illuminate\Http\Request $request
+     * @return view
+     */
+    public function parse(Request $request):\Illuminate\View\View
+    {
+        $validatedData = $request->validate( [
+            'table' => 'required'
+        ]);
+        $filename = explode('.', $validatedData['table']->getClientOriginalName());
+        if (count($filename) == 2 && $filename[1] === 'xlsx') {
+            Excel::import(new BooksImport, $request->table);
+            $status = 'Books added';
+            return view('layouts.add-from-excel', [
+                'status' => $status
+            ]);
+        }
     }
 }

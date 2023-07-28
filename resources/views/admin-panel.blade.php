@@ -76,6 +76,8 @@
             <a href="{{ route('manageUsers') }}" class="btn btn-primary">You can manage users</a>
             <a href="{{ route('manageBooks') }}" class="btn btn-primary">You can manage books</a>
             <a href="{{ route('manageCategories') }}" class="btn btn-primary">You can manage categories</a>
+            <a href="{{ route('parseForm') }}" class="btn btn-primary">Add books from .xlsx file</a>
+            <a href="{{ route('Jobs') }}" class="btn btn-primary">Add books automatically from .xlsx file</a>
         </div>
         <!-- Start: Footer -->
         @include('layouts.footer')

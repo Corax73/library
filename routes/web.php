@@ -5,6 +5,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\QueueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,7 @@ Route::controller(MainController::class)
     Route::get('/', 'index')->name('main');
     Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
     Route::post('/book-listCat', 'bookListCat')->name('book-ListCat')->middleware('auth');
+    Route::get('/book-list-category-{id}-{slug}', 'bookListCatShow')->name('book-ListCatShow')->middleware('auth');
     Route::get('/singin', 'singin')->name('singin');
     Route::get('/category-{slug}-book-{id}', 'showBook')->name('showBook')->middleware('auth');
     Route::post('/book-{id}-set-rating', 'setRating')->name('setRating')->middleware('auth');
@@ -45,6 +47,8 @@ Route::controller(AdminController::class)
     Route::get('/manage-categories', 'manageCategories')->name('manageCategories')->middleware('admin');
     Route::delete('/delete-category/{id}', 'destroyCategory')->name('destroyCategory')->middleware('admin');
     Route::patch('/category-{id}', 'categoryUpdate')->name('categoryUpdate')->middleware('admin');
+    Route::get('/parse', 'parseForm')->name('parseForm')->middleware('admin');
+    Route::post('/parse', 'parse')->name('parse')->middleware('admin');
 });
 
 Route::controller(LoginController::class)
@@ -58,3 +62,5 @@ Route::controller(CommentController::class)
 -> group(function () {
     Route::post('/book-{id}', 'createComment')->name('createComment')->middleware('auth');
 });
+
+Route::get('/jobs',[QueueController::class,'jobs'])->name('Jobs')->middleware('auth');

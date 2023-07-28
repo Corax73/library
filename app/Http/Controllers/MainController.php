@@ -36,16 +36,30 @@ class MainController extends Controller
 
     /**
      * showing books by category
+     * @param  \Illuminate\Http\Request $request
      * @return view | redirect
      */
     public function bookListCat(Request $request)
     {
-        $categories = Category::all();
-        $books = Book::paginate(10);
         $id = (integer)$request->category;
         if(isset($id) && $id !== 0){
             $category = Category::find($id);
-            $books = Book::where('slug', $category->title)->paginate(10);
+            return redirect()->route('book-ListCatShow', ['id' => $id, 'slug' => $category->title]);
+        }
+        return redirect()->route('book-list');
+    }
+     /**
+     * showing books by category after selection
+     * @param int $id
+     * @param string $slug
+     * @return view | redirect
+     */
+    public function bookListCatShow(int $id, string $slug)
+    {
+        $categories = Category::all();
+        $books = Book::paginate(10);
+        if(isset($id) && $id !== 0){
+            $books = Book::where('slug', $slug)->paginate(10);
             
             return view('book-list', [
                 'books' => $books,
