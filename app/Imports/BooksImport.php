@@ -4,10 +4,12 @@ namespace App\Imports;
 
 use App\Models\Book;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class BooksImport implements 
     ToModel,
+    WithBatchInserts,
     WithChunkReading
 {
     /**
@@ -24,6 +26,11 @@ class BooksImport implements
            'description' => 'no set',
            'cover' => 'no set',
         ]);
+    }
+
+    public function batchSize(): int
+    {
+        return 100;
     }
 
     public function chunkSize(): int

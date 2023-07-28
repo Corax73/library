@@ -150,7 +150,6 @@ class AdminController extends Controller
      */
     public function manageBooks()
     {
-        //$books = Book::all();
         $books = Book::paginate(10);
         return view('layouts.manage-books', [
             'books' => $books
@@ -267,6 +266,10 @@ class AdminController extends Controller
         return redirect()->route('manageCategories');
     }
 
+    /**
+     * view parse page
+     * @return view
+     */
     public function parseForm():\Illuminate\View\View
     {
         $status = '';
@@ -275,6 +278,11 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * add books to the database from a file
+     * @param  \Illuminate\Http\Request $request
+     * @return view
+     */
     public function parse(Request $request):\Illuminate\View\View
     {
         $validatedData = $request->validate( [
