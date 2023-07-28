@@ -5,6 +5,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\QueueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,5 @@ Route::controller(CommentController::class)
 -> group(function () {
     Route::post('/book-{id}', 'createComment')->name('createComment')->middleware('auth');
 });
+
+Route::get('/jobs',[QueueController::class,'jobs'])->name('Jobs')->middleware('auth');
