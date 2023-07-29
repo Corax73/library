@@ -18,7 +18,7 @@ class CommentController extends Controller
     {
         if (Auth::check()) {
             $book_id = (integer)$request->id;
-
+            $slug = $request->slug;
             $validatedData = $request -> validate( [
                 'author' => 'required|min:3',
                 'text' => 'required|min:10'
@@ -27,7 +27,7 @@ class CommentController extends Controller
 
             Comment::create($validatedData);
 
-            return redirect()->route('showBook', $book_id);
+            return redirect()->route('showBook', ['id' => $book_id, 'slug' => $slug]);
         } else {
             return view('main');
         }
