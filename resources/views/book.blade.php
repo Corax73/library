@@ -165,7 +165,7 @@
             <div class="col-sm-6">
             <div id="comment_form">
                     <h3>Leave a comment</h3>
-                    <form action="{{ route('createComment', $book->id) }}" method="post">
+                    <form action="{{ route('createComment', ['id' => $book->id, 'slug' => $book->slug]) }}" method="post">
                       @csrf
                         <div class="form_row">
                             <label><strong>Name</strong> (required)</label>

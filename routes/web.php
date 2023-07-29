@@ -60,7 +60,7 @@ Route::controller(LoginController::class)
 
 Route::controller(CommentController::class)
 -> group(function () {
-    Route::post('/book-{id}', 'createComment')->name('createComment')->middleware('auth');
+    Route::post('/category-{slug}-book-{id}', 'createComment')->name('createComment')->middleware('auth');
 });
 
 Route::get('/jobs',[QueueController::class,'jobs'])->name('Jobs')->middleware('auth');
