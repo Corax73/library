@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Book;
 
-class BookController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
-        return response($books);
+        $categories = Category::all();
+        return response($categories);
     }
 
     /**
@@ -48,11 +48,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $input = json_encode($request->getContent(), JSON_UNESCAPED_UNICODE);
-        $json = json_decode($input, true);
-        return response($json);
+        //
     }
 
     /**
