@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\JsonParsing;
 use Validator;
 
 class BookController extends Controller
@@ -51,21 +52,10 @@ class BookController extends Controller
      */
     public function update(Request $request)
     {
-        $input = json_encode($request->getContent(), JSON_UNESCAPED_UNICODE);
-        $json = json_decode($input, true);
-        $a = trim($json, '{');
-        $a = trim($a, '}');
-        $b = preg_split("/[,]/", $a);
-        $result = [];
-        $result1 = [];
-        foreach ($b as $value) {
-            $result[] = explode(':', $value);
-        }
-        foreach ($result as $value) {
-            $str = trim(str_replace('"', '', $value[0]));
-            $result1[$str] = trim($value[1]);
-        }
-        $validData = Validator::make($result1, [
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric',
             'title' => 'required|unique:books|min:3',
             'slug' => 'required|unique:books',
             'author' => 'required|min:5',
@@ -73,12 +63,12 @@ class BookController extends Controller
             'cover' => 'required'
         ]);
         if(!$validData->fails()){
-            $book = Book::find((integer)$result1['id']);
-            unset($result1['id']);
-            $book->update($result1);
-            return response('work');
+            $book = Book::find((integer)$result['id']);
+            unset($result['id']);
+            $book->update($result);
+            return response($book);
         }
-        return response('not work');
+        return response(['message' => $validData->messages()]);
     }
 
     /**
