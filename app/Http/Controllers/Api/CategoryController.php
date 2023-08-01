@@ -73,9 +73,13 @@ class CategoryController extends Controller
         ]);
         if(!$validData->fails()){
             $category = Category::find((integer)$result['id']);
-            unset($result['id']);
-            $category->update($result);
-            return response($category);
+            if (isset($category)) {
+                unset($result['id']);
+                $category->update($result);
+                return response($category);
+            } else {
+                return response('Category not found.');
+            }
         }
         return response(['message' => $validData->messages()]);
     }

@@ -76,9 +76,13 @@ class BookController extends Controller
         ]);
         if(!$validData->fails()){
             $book = Book::find((integer)$result['id']);
-            unset($result['id']);
-            $book->update($result);
-            return response($book);
+            if (isset($book)) {
+                unset($result['id']);
+                $book->update($result);
+                return response($book);
+            } else {
+                return response('Book not found.');
+            };
         }
         return response(['message' => $validData->messages()]);
     }
