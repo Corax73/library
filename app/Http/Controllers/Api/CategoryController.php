@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\JsonParsing;
 use Illuminate\Http\Request;
+use Validator;
 
 class CategoryController extends Controller
 {
@@ -33,24 +35,49 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric'
+        ]);
+        if(!$validData->fails()){
+            $category = Category::find((integer)$result['id']);
+            if (isset($category)) {
+                return response($category);
+            } else {
+                return response('Category not found.');
+            }
+        }
+        return response(['message' => $validData->messages()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric',
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
+        ]);
+        if(!$validData->fails()){
+            $category = Category::find((integer)$result['id']);
+            unset($result['id']);
+            $category->update($result);
+            return response($category);
+        }
+        return response(['message' => $validData->messages()]);
     }
 
     /**

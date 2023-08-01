@@ -35,19 +35,31 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric'
+        ]);
+        if(!$validData->fails()){
+            $book = Book::find((integer)$result['id']);
+            if (isset($book)) {
+                return response($book);
+            } else {
+                return response('Category not found.');
+            }
+        }
+        return response(['message' => $validData->messages()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)

@@ -30,9 +30,12 @@ Route::controller(BookController::class)
 -> group(function () {
     Route::middleware('auth:api')->get('books/getAll', 'index');
     Route::middleware('auth:api')->post('books/update', 'update');
+    Route::middleware('auth:api')->get('books/getOne', 'show');
 });
 
 Route::controller(CategoryController::class)
 -> group(function () {
     Route::middleware('auth:api')->get('categories/getAll', 'index');
+    Route::middleware('auth:api')->get('categories/getOne', 'show');
+    Route::middleware('auth:api')->post('categories/update', 'update');
 });
