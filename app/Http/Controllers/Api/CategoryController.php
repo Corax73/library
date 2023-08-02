@@ -98,11 +98,22 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric'
+        ]);
+        if(!$validData->fails()){
+            $category = Category::find((integer)$result['id']);
+            $category->delete();
+            return response('Category removed');
+        } else {
+            return response('Category not found.');
+        }
     }
 }

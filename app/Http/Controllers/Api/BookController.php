@@ -64,7 +64,7 @@ class BookController extends Controller
             if (isset($book)) {
                 return response($book);
             } else {
-                return response('Category not found.');
+                return response('Book not found.');
             }
         }
         return response(['message' => $validData->messages()]);
@@ -104,11 +104,22 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'id' => 'required|numeric'
+        ]);
+        if(!$validData->fails()){
+            $book = Book::find((integer)$result['id']);
+            $book->delete();
+            return response('Book removed');
+        } else {
+            return response('Book not found.');
+        }
     }
 }
