@@ -29,7 +29,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
+        ]);
+        if(!$validData->fails()){
+            $category = Category::create($result);
+                return response($category);
+            } else {
+                return response(['message' => $validData->messages()]);
+            }
     }
 
     /**

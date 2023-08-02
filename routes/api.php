@@ -31,6 +31,7 @@ Route::controller(BookController::class)
     Route::middleware('auth:api')->get('books/getAll', 'index');
     Route::middleware('auth:api')->post('books/update', 'update');
     Route::middleware('auth:api')->get('books/getOne', 'show');
+    Route::middleware('auth:api')->post('books/create', 'store');
 });
 
 Route::controller(CategoryController::class)
@@ -38,4 +39,5 @@ Route::controller(CategoryController::class)
     Route::middleware('auth:api')->get('categories/getAll', 'index');
     Route::middleware('auth:api')->get('categories/getOne', 'show');
     Route::middleware('auth:api')->post('categories/update', 'update');
+    Route::middleware('auth:api')->post('categories/create', 'store');
 });

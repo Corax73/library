@@ -29,7 +29,21 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jsonParsing = new JsonParsing();
+        $result = $jsonParsing->parse($request);
+        $validData = Validator::make($result, [
+            'title' => 'required|unique:books|min:3',
+            'slug' => 'required|unique:books',
+            'author' => 'required|min:5',
+            'description' => 'required|min:30',
+            'cover' => 'required'
+        ]);
+        if(!$validData->fails()){
+            $book = Book::create($result);
+                return response($book);
+            } else {
+                return response(['message' => $validData->messages()]);
+            }
     }
 
     /**
