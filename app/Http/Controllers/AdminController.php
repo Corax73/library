@@ -164,8 +164,8 @@ class AdminController extends Controller
     public function destroyBook(Request $request)
     {
         $id = (integer)$request->id;
-        $user = Book::find($id);
-        $user->delete();
+        $book = Book::find($id);
+        $book->delete();
             
         return redirect()->route('manageBooks');
     }
