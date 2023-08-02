@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,4 +43,13 @@ Route::controller(CategoryController::class)
     Route::middleware('auth:api')->post('categories/update', 'update');
     Route::middleware('auth:api')->post('categories/create', 'store');
     Route::middleware('auth:api')->delete('categories/delete', 'destroy');
+});
+
+Route::controller(UserController::class)
+-> group(function () {
+    Route::middleware('auth:api')->get('users/getAll', 'index');
+    Route::middleware('auth:api')->get('users/getOne', 'show');
+    Route::middleware('auth:api')->post('users/update', 'update');
+    Route::middleware('auth:api')->post('users/create', 'store');
+    Route::middleware('auth:api')->delete('users/delete', 'destroy');
 });
