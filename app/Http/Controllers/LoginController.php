@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLoggedIn;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\UserLoggedInNotficat;
 
 class LoginController extends Controller
 {
@@ -43,6 +45,7 @@ class LoginController extends Controller
         
         if (Auth::attempt($input)) {
             $request->session()->regenerate();
+            UserLoggedIn::dispatch(Auth::user());
 
             return redirect()->intended('book-list');
         }
