@@ -24,7 +24,7 @@ Route::controller(MainController::class)
     Route::get('/book-list', 'bookList')->name('book-list')->middleware('auth');
     Route::post('/book-listCat', 'bookListCat')->name('book-ListCat')->middleware('auth');
     Route::get('/book-list-category-{id}-{slug}', 'bookListCatShow')->name('book-ListCatShow')->middleware('auth');
-    Route::get('/singin', 'singin')->name('singin');
+    Route::get('/singin', 'singin')->name('singin')->middleware('guest');
     Route::get('/category-{slug}-book-{id}', 'showBook')->name('showBook')->middleware('auth');
     Route::post('/book-{id}-set-rating', 'setRating')->name('setRating')->middleware('auth');
 });
@@ -53,7 +53,7 @@ Route::controller(AdminController::class)
 
 Route::controller(LoginController::class)
 -> group(function () {
-    Route::post('/singin', 'login')->name('login');
+    Route::post('/singin', 'login')->name('login')->middleware('guest');
     Route::post('/singinCreate', 'createUser')->name('createUser');
     Route::post('/logout', 'logout')->name('logout');
 });
