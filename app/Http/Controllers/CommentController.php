@@ -2,27 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateCommentRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Book;
 use App\Models\Comment;
 
 class CommentController extends Controller
 {
     /**
      * adds comment instance and saves
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\CreateCommentRequest $request
      * @return redirect
      */
-    public function createComment(Request $request)
+    public function createComment(CreateCommentRequest $request)
     {
         if (Auth::check()) {
             $book_id = (integer)$request->id;
             $slug = $request->slug;
-            $validatedData = $request -> validate( [
-                'author' => 'required|min:3',
-                'text' => 'required|min:10'
-            ]);
+            $validatedData = $request -> validated();
             $validatedData['book_id'] = $book_id;
 
             Comment::create($validatedData);

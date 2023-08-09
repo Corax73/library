@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddBookRequest;
+use App\Http\Requests\AddCategoryRequest;
+use App\Http\Requests\ParseRequest;
+use App\Http\Requests\UpdateBookRequest;
+use App\Http\Requests\UpdateBookWithoutCoverRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Faker\Generator as Faker;
 use App\Models\ListOfAdmins;
-use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\BooksImport;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use PhpOption\None;
 
 class AdminController extends Controller
 {
@@ -38,17 +41,12 @@ class AdminController extends Controller
 
     /**
      * adds book instance and saves
+     * @param App\Http\Requests\AddBookRequest $request
      * @return redirect
      */
-    public function addBook(Request $request, Faker $faker)
+    public function addBook(AddBookRequest $request, Faker $faker)
     {
-        $validatedData = $request -> validate( [
-            'title' => 'required|unique:books|min:3',
-            'slug' => 'required|unique:books',
-            'author' => 'required|min:5',
-            'description' => 'required|min:30',
-            'cover' => 'required'
-        ]);
+        $validatedData = $request->validated();
         
         $filename = cover_load($validatedData, $faker);
         $validatedData['cover'] = $filename;
@@ -68,15 +66,12 @@ class AdminController extends Controller
 
     /**
      * add category and save
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\AddCategoryRequest $request
      * @return redirect
      */
-    public function addCategory(Request $request)
+    public function addCategory(AddCategoryRequest $request)
     {
-        $validatedData = $request->validate( [
-            'title' => 'required|unique:categories|min:3',
-            'slug' => 'required|unique:categories'
-        ]);
+        $validatedData = $request->validated();
         Category::create($validatedData);
 
         return redirect()->route('manageCategories');
@@ -97,16 +92,13 @@ class AdminController extends Controller
 
     /**
      * editing user margins
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\UpdateUserRequest $request
      * @return redirect
      */
-    public function userUpdate(Request $request)
+    public function userUpdate(UpdateUserRequest $request)
     {
         $user = User::find((integer)$request->id);
-        $validatedData = $request->validate( [
-            'name' => 'required|unique:users|min:3',
-            'email' => 'required|unique:users|email'
-        ]);
+        $validatedData = $request->validated();
         $user->update($validatedData);
             
         return redirect()->route('manageUsers');
@@ -190,28 +182,15 @@ class AdminController extends Controller
      * @param Faker @faker
      * @return view
      */
-    public function bookUpdate(Request $request, Faker $faker)
+    public function bookUpdate(UpdateBookRequest $request, UpdateBookWithoutCoverRequest $requestWithoutCover, Faker $faker)
     {
-        $book = Book::find((integer)$request->id);
-            
+        $book = Book::find((integer)$request->id);  
         if ($request->cover) {
-            $validatedData = $request->validate( [
-                'title' => 'required|unique:books|min:3',
-                'slug' => 'required|unique:books',
-                'author' => 'required|min:5',
-                'description' => 'required|min:30',
-                'cover' => 'required'
-            ]);
-                
+            $validatedData = $request->validated();
             $filename = cover_update($book, $validatedData, $faker);
             $validatedData['cover'] = $filename;
         } else {
-            $validatedData = $request->validate( [
-                'title' => 'required|unique:books|min:3',
-                'slug' => 'required|unique:books',
-                'author' => 'required|min:5',
-                'description' => 'required|min:30',
-            ]);
+            $validatedData = $requestWithoutCover->validated();
         }
         $book->update($validatedData);
             
@@ -235,17 +214,14 @@ class AdminController extends Controller
 
     /**
      * editing category margins
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\UpdateCategoryRequest; $request
      * @return view
      */
-    public function categoryUpdate(Request $request)
+    public function categoryUpdate(UpdateCategoryRequest $request)
     {
         $category = Category::find((integer)$request->id);
 
-        $validatedData = $request->validate( [
-            'title' => 'required|unique:categories|min:3',
-            'slug' => 'required|unique:categories'
-        ]);
+        $validatedData = $request->validated();
         
         $category->update($validatedData);
             
@@ -280,14 +256,12 @@ class AdminController extends Controller
 
     /**
      * add books to the database from a file
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\ParseRequest $request
      * @return view
      */
-    public function parse(Request $request):\Illuminate\View\View
+    public function parse(ParseRequest $request):\Illuminate\View\View
     {
-        $validatedData = $request->validate( [
-            'table' => 'required'
-        ]);
+        $validatedData = $request->validated();
         $filename = explode('.', $validatedData['table']->getClientOriginalName());
         if (count($filename) == 2 && $filename[1] === 'xlsx') {
             Excel::import(new BooksImport, $request->table);

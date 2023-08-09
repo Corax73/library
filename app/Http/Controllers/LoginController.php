@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Events\UserLoggedIn;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\LoginUserRequest;
 
 class LoginController extends Controller
 {
     /**
      * Creating a new user
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\CreateUserRequest $request
      * @return redirect
      */
-    public function createUser(Request $request)
+    public function createUser(CreateUserRequest $request)
     {
-        $validatedData = $request->validate( [
-            'name' => 'required|unique:users|min:3',
-            'email' => 'required|unique:users|email',
-            'password' => 'required|min:8'
-        ]);
+        $validatedData = $request->validated();
 
         $validatedData['password'] = Hash::make( $validatedData['password']);
         $user = new User($validatedData);
@@ -31,18 +29,16 @@ class LoginController extends Controller
 
     /**
      * user login verification
-     * @param  \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\LoginUserRequest $request
      * @return redirect
      */
-    public function login(Request $request)
-    {        
-        $input = $request->validate([
-            'name' => ['required'],
-            'password' => ['required'],
-        ]);
-        
+    public function login(LoginUserRequest $request)
+    {
+        $input = $request->validated();
+
         if (Auth::attempt($input)) {
             $request->session()->regenerate();
+            UserLoggedIn::dispatch(Auth::user());
 
             return redirect()->intended('book-list');
         }
