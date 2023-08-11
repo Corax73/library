@@ -42,9 +42,15 @@ class MainController extends Controller
     public function bookListCat(Request $request)
     {
         $id = (integer)$request->category;
-        if(isset($id) && $id !== 0){
+        $keywords = (string)$request->keywords;
+        if(isset($id) && $id !== 0 && !empty($keywords)){
             $category = Category::find($id);
+            if (!empty($request->keywords)) {
+                return redirect()->route('book-ListCatShow', ['id' => $id, 'slug' => $category->title, 'keywords' => $keywords]);
+            }
             return redirect()->route('book-ListCatShow', ['id' => $id, 'slug' => $category->title]);
+        } elseif (!empty($keywords) && $id == 0) {
+            return redirect()->route('book-ListCatShow', ['id' => 0, 'slug' => 'all', 'keywords' => $keywords]);
         }
         return redirect()->route('book-list');
     }
@@ -52,12 +58,26 @@ class MainController extends Controller
      * showing books by category after selection
      * @param int $id
      * @param string $slug
+     * @param string $keywords
      * @return view | redirect
      */
-    public function bookListCatShow(int $id, string $slug)
+    public function bookListCatShow(int $id, string $slug, string $keywords = '')
     {
         $categories = Category::all();
-        $books = Book::paginate(10);
+        if (!empty($keywords)) {
+            if(isset($id) && $id !== 0){
+                $books = Book::where('title', 'like', "%{$keywords}%")->where('slug', $slug)->paginate(10);
+                return view('book-list', [
+                    'books' => $books,
+                    'categories' => $categories
+                ]);
+            }
+            $books = Book::where('title', 'like', "%{$keywords}%")->paginate(10);
+            return view('book-list', [
+                'books' => $books,
+                'categories' => $categories
+            ]);
+        }
         if(isset($id) && $id !== 0){
             $books = Book::where('slug', $slug)->paginate(10);
             
