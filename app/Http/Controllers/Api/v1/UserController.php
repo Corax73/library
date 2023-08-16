@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\User;
 use App\Models\JsonParsing;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\Hash;
 
-class CategoryController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return response($categories);
+        $user = User::all();
+        return response($user);
     }
 
     /**
@@ -32,12 +33,14 @@ class CategoryController extends Controller
         $jsonParsing = new JsonParsing();
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
-            'title' => 'required|unique:categories|min:3',
-            'slug' => 'required|unique:categories'
+            'name' => 'required|unique:users|min:3',
+            'email' => 'required|unique:users|email',
+            'password' => 'required|min:8'
         ]);
         if(!$validData->fails()){
-            $category = Category::create($result);
-                return response($category);
+            $result['password'] = Hash::make( $result['password']);
+            $user = User::create($result);
+                return response($user);
             } else {
                 return response(['message' => $validData->messages()]);
             }
@@ -57,11 +60,11 @@ class CategoryController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $category = Category::find((integer)$result['id']);
-            if (isset($category)) {
-                return response($category);
+            $user = User::find((integer)$result['id']);
+            if (isset($user)) {
+                return response($user);
             } else {
-                return response('Category not found.');
+                return response('User not found.');
             }
         }
         return response(['message' => $validData->messages()]);
@@ -75,21 +78,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
+        //var_dump($request->getContent()); die;
         $jsonParsing = new JsonParsing();
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
             'id' => 'required|numeric',
-            'title' => 'required|unique:categories|min:3',
-            'slug' => 'required|unique:categories'
+            'name' => 'required|unique:users|min:3',
+            'email' => 'required|unique:users|email'
         ]);
         if(!$validData->fails()){
-            $category = Category::find((integer)$result['id']);
-            if (isset($category)) {
+            $user = User::find((integer)$result['id']);
+            if (isset($user)) {
                 unset($result['id']);
-                $category->update($result);
-                return response($category);
+                $user->update($result);
+                return response($user);
             } else {
-                return response('Category not found.');
+                return response('User not found.');
             }
         }
         return response(['message' => $validData->messages()]);
@@ -109,11 +113,11 @@ class CategoryController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $category = Category::find((integer)$result['id']);
-            $category->delete();
-            return response('Category removed');
+            $user = User::find((integer)$result['id']);
+            $user->delete();
+            return response('User removed');
         } else {
-            return response('Category not found.');
+            return response('User not found.');
         }
     }
 }

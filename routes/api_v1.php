@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\BookController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\v1\RegisterController;
+use App\Http\Controllers\Api\v1\BookController;
+use App\Http\Controllers\Api\v1\CategoryController;
+use App\Http\Controllers\Api\v1\UserController;
 
 /*
 |--------------------------------------------------------------------------
