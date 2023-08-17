@@ -9,17 +9,21 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\JsonParsing;
 use Validator;
+use Illuminate\Support\Facades\Cache;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Work with caching
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return new BookCollection(Book::paginate(20));
+        return response(new BookCollection(Cache::remember('books', 300, function() {
+            return Book::paginate(20);
+        })));
     }
 
     /**
