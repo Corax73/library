@@ -1,25 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\JsonParsing;
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
 use Illuminate\Http\Request;
+use App\Models\Book;
+use App\Models\JsonParsing;
 use Validator;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
-class UserController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Work with caching
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $user = User::all();
-        return response($user);
+        return response(new BookCollection(Cache::remember('books', 300, function() {
+            return Book::paginate(20);
+        })));
     }
 
     /**
@@ -33,14 +37,15 @@ class UserController extends Controller
         $jsonParsing = new JsonParsing();
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
-            'name' => 'required|unique:users|min:3',
-            'email' => 'required|unique:users|email',
-            'password' => 'required|min:8'
+            'title' => 'required|unique:books|min:3',
+            'slug' => 'required|unique:books',
+            'author' => 'required|min:5',
+            'description' => 'required|min:30',
+            'cover' => 'required'
         ]);
         if(!$validData->fails()){
-            $result['password'] = Hash::make( $result['password']);
-            $user = User::create($result);
-                return response($user);
+            $book = Book::create($result);
+                return response($book);
             } else {
                 return response(['message' => $validData->messages()]);
             }
@@ -60,11 +65,11 @@ class UserController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $user = User::find((integer)$result['id']);
-            if (isset($user)) {
-                return response($user);
+            $book = Book::find((integer)$result['id']);
+            if (isset($book)) {
+                return response(new BookResource(Book::find((integer)$result['id'])));
             } else {
-                return response('User not found.');
+                return response(['message' => 'Book not found.']);
             }
         }
         return response(['message' => $validData->messages()]);
@@ -78,23 +83,25 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-        //var_dump($request->getContent()); die;
         $jsonParsing = new JsonParsing();
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
             'id' => 'required|numeric',
-            'name' => 'required|unique:users|min:3',
-            'email' => 'required|unique:users|email'
+            'title' => 'required|unique:books|min:3',
+            'slug' => 'required|unique:books',
+            'author' => 'required|min:5',
+            'description' => 'required|min:30',
+            'cover' => 'required'
         ]);
         if(!$validData->fails()){
-            $user = User::find((integer)$result['id']);
-            if (isset($user)) {
+            $book = Book::find((integer)$result['id']);
+            if (isset($book)) {
                 unset($result['id']);
-                $user->update($result);
-                return response($user);
+                $book->update($result);
+                return response($book);
             } else {
-                return response('User not found.');
-            }
+                return response('Book not found.');
+            };
         }
         return response(['message' => $validData->messages()]);
     }
@@ -113,11 +120,11 @@ class UserController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $user = User::find((integer)$result['id']);
-            $user->delete();
-            return response('User removed');
+            $book = Book::find((integer)$result['id']);
+            $book->delete();
+            return response('Book removed');
         } else {
-            return response('User not found.');
+            return response('Book not found.');
         }
     }
 }

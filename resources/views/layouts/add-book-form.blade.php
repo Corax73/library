@@ -6,28 +6,28 @@
                                             @csrf
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Title</span>
-                                                <input name="title" type="text" class="form-control" placeholder="Title" aria-label="Server">
+                                                <input name="title" type="text" class="form-control" placeholder="Title" aria-label="Server" value="{{ old('title') }}">
                                             </div>
                                             @if ($errors->has('title'))
                                             <span class="text-danger">{{ $errors->first('title') }}</span>
                                             @endif
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon1">Slug</span>
-                                                <input name="slug" type="text" class="form-control" placeholder="Slug" aria-label="Username" aria-describedby="basic-addon1">
+                                                <input name="slug" type="text" class="form-control" placeholder="Slug" aria-label="Username" aria-describedby="basic-addon1" value="{{ old('slug') }}">
                                             </div>
                                             @if ($errors->has('slug'))
                                             <span class="text-danger">{{ $errors->first('slug') }}</span>
                                             @endif
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon1">Author</span>
-                                                <input name="author" type="text" class="form-control" placeholder="Author" aria-label="Username" aria-describedby="basic-addon1">
+                                                <input name="author" type="text" class="form-control" placeholder="Author" aria-label="Username" aria-describedby="basic-addon1" value="{{ old('author') }}">
                                             </div>
                                             @if ($errors->has('author'))
                                             <span class="text-danger">{{ $errors->first('author') }}</span>
                                             @endif
                                             <div class="input-group">
                                                 <span class="input-group-text">Description</span>
-                                                <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
+                                                <textarea name="description" class="form-control" aria-label="With textarea" >{{ old('description') }}</textarea>
                                             </div>
                                             @if ($errors->has('description'))
                                             <span class="text-danger">{{ $errors->first('description') }}</span>

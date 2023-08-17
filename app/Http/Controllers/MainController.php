@@ -51,6 +51,9 @@ class MainController extends Controller
             return redirect()->route('book-ListCatShow', ['id' => $id, 'slug' => $category->title]);
         } elseif (!empty($keywords) && $id == 0) {
             return redirect()->route('book-ListCatShow', ['id' => 0, 'slug' => 'all', 'keywords' => $keywords]);
+        } elseif (empty($keywords) && $id !== 0) {
+            $category = Category::find($id);
+            return redirect()->route('book-ListCatShow', ['id' => $id, 'slug' => $category->title, 'keywords' => $keywords]);
         }
         return redirect()->route('book-list');
     }

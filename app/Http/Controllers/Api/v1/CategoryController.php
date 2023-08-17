@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Book;
+use App\Models\Category;
 use App\Models\JsonParsing;
+use Illuminate\Http\Request;
 use Validator;
 
-class BookController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
-        return response($books);
+        $categories = Category::all();
+        return response($categories);
     }
 
     /**
@@ -32,15 +32,12 @@ class BookController extends Controller
         $jsonParsing = new JsonParsing();
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
-            'title' => 'required|unique:books|min:3',
-            'slug' => 'required|unique:books',
-            'author' => 'required|min:5',
-            'description' => 'required|min:30',
-            'cover' => 'required'
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
         ]);
         if(!$validData->fails()){
-            $book = Book::create($result);
-                return response($book);
+            $category = Category::create($result);
+                return response($category);
             } else {
                 return response(['message' => $validData->messages()]);
             }
@@ -60,11 +57,11 @@ class BookController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $book = Book::find((integer)$result['id']);
-            if (isset($book)) {
-                return response($book);
+            $category = Category::find((integer)$result['id']);
+            if (isset($category)) {
+                return response($category);
             } else {
-                return response('Book not found.');
+                return response('Category not found.');
             }
         }
         return response(['message' => $validData->messages()]);
@@ -82,21 +79,18 @@ class BookController extends Controller
         $result = $jsonParsing->parse($request);
         $validData = Validator::make($result, [
             'id' => 'required|numeric',
-            'title' => 'required|unique:books|min:3',
-            'slug' => 'required|unique:books',
-            'author' => 'required|min:5',
-            'description' => 'required|min:30',
-            'cover' => 'required'
+            'title' => 'required|unique:categories|min:3',
+            'slug' => 'required|unique:categories'
         ]);
         if(!$validData->fails()){
-            $book = Book::find((integer)$result['id']);
-            if (isset($book)) {
+            $category = Category::find((integer)$result['id']);
+            if (isset($category)) {
                 unset($result['id']);
-                $book->update($result);
-                return response($book);
+                $category->update($result);
+                return response($category);
             } else {
-                return response('Book not found.');
-            };
+                return response('Category not found.');
+            }
         }
         return response(['message' => $validData->messages()]);
     }
@@ -115,11 +109,11 @@ class BookController extends Controller
             'id' => 'required|numeric'
         ]);
         if(!$validData->fails()){
-            $book = Book::find((integer)$result['id']);
-            $book->delete();
-            return response('Book removed');
+            $category = Category::find((integer)$result['id']);
+            $category->delete();
+            return response('Category removed');
         } else {
-            return response('Book not found.');
+            return response('Category not found.');
         }
     }
 }
